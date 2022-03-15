@@ -101,10 +101,7 @@ const App = () => {
                 title="Add Number to Arr"
                 onPress={() => setArr([...arr, parseFloat(text)])}
               />
-              <Button
-                title="Rearrange"
-                onPress={() => setArr([...arr, parseFloat(text)])}
-              />
+              <Button title="Rearrange" onPress={() => reArrangeNumbers()} />
             </View>
           </View>
         </View>
