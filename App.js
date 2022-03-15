@@ -6,14 +6,15 @@
  * @flow strict-local
  */
 
-import React from 'react';
-import type {Node} from 'react';
+import React, {useCallback, useState} from 'react';
 import {
+  Button,
   SafeAreaView,
   ScrollView,
   StatusBar,
   StyleSheet,
   Text,
+  TextInput,
   useColorScheme,
   View,
 } from 'react-native';
@@ -26,7 +27,7 @@ import {
   ReloadInstructions,
 } from 'react-native/Libraries/NewAppScreen';
 
-const Section = ({children, title}): Node => {
+const Section = ({children, title}) => {
   const isDarkMode = useColorScheme() === 'dark';
   return (
     <View style={styles.sectionContainer}>
@@ -52,11 +53,21 @@ const Section = ({children, title}): Node => {
   );
 };
 
-const App: () => Node = () => {
+const App = () => {
   const isDarkMode = useColorScheme() === 'dark';
 
   const backgroundStyle = {
     backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
+  };
+
+  const [arr, setArr] = useState([]);
+  const [text, setText] = useState();
+
+  const reArrangeNumbers = () => {
+    const newArray = arr.map(e =>
+      parseFloat(e.toString().split('').sort().join()),
+    );
+    setArr(newArray);
   };
 
   return (
@@ -70,20 +81,32 @@ const App: () => Node = () => {
           style={{
             backgroundColor: isDarkMode ? Colors.black : Colors.white,
           }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.js</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
+          <View style={{justifyContent: 'space-between', flexGrow: 1}}>
+            <View
+              style={{
+                flexGrow: 1,
+                justifyContent: 'center',
+                alignItems: 'stretch',
+              }}>
+              <TextInput value={text} onChangeText={value => setText(value)} />
+            </View>
+
+            <View
+              style={{
+                flexGrow: 1,
+                justifyContent: 'center',
+                alignItems: 'stretch',
+              }}>
+              <Button
+                title="Add Number to Arr"
+                onPress={() => setArr([...arr, parseFloat(text)])}
+              />
+              <Button
+                title="Rearrange"
+                onPress={() => setArr([...arr, parseFloat(text)])}
+              />
+            </View>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>
